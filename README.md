@@ -4,7 +4,7 @@
 
 - Crie um repositório no seu GitHub **sem citar nada relacionado a empresa dos cara lá**. (CHECK)
 - Faça seus commits no seu repositório. (CHECK)
-- Envie o link do seu repositório para o email **talentos_php@picpay.com**. (X)
+- Envie o link do seu repositório para o email **talentos_php@empresalápay.com**. (X)
 - Você poderá consultar o Google, Stackoverflow ou algum projeto particular na sua máquina. (CHECK)
 - Dê uma olhada nos [Materiais úteis](#materiais-úteis). (CHECK)
 - Fique à vontade para perguntar qualquer dúvida aos recrutadores. (X)
