@@ -16,3 +16,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/auth/{provider}', 'AuthController@postAuthenticate');
+$router->get('/test', 'TestController@test');
+
+$router->get('users/me', 'User\MeController@getMe');
