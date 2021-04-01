@@ -37,7 +37,6 @@ class AuthRepository
         $tokenResult = $model->createToken($this->provider);
         return [
             'access_token' => $tokenResult->accessToken,
-            'refresh_token' => $tokenResult->refreshToken,
             'token_type' => 'Bearer',
             'provider' => ucfirst($this->provider)
         ];
