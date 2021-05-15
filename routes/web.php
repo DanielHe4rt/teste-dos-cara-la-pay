@@ -14,10 +14,18 @@
 */
 
 $router->get('/', function () use ($router) {
+    $user = [
+        'id' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+        'name' => 'eae',
+        'email' => 'fake@danielheart.dev',
+        'password' => \Illuminate\Support\Facades\Hash::make('123123'),
+        'document_id' => 123
+    ];
+    \App\Models\User::create($user);
     return $router->app->version();
 });
 
-$router->get('/auth/{provider}', 'AuthController@postAuthenticate');
+$router->post('/auth/{provider}', ['as' => 'authenticate', 'uses' => 'AuthController@postAuthenticate']);
 $router->get('/test', 'TestController@test');
 
 $router->get('users/me', 'User\MeController@getMe');

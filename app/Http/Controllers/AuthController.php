@@ -4,13 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ProviderNotFoundException;
 use App\Exceptions\UnauthorizedException;
-use App\Models\Retailer;
-use App\Models\User;
 use App\Repositories\AuthRepository;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Http;
+
 
 class AuthController extends Controller
 {
@@ -40,14 +36,9 @@ class AuthController extends Controller
             $result = $this->repository->authenticate($provider, $request->only(['email', 'password']));
             return response()->json($result);
         } catch (ProviderNotFoundException $e) {
-            return response()->json(['error' => 'provider not found'], 422);
+            return response()->json(['error' => "Provider '" . $provider . "' not expected."], 422);
         } catch (UnauthorizedException $e) {
-            return response()->json(['error' => 'unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
-
-
-
-
-
 }
