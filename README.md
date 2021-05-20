@@ -115,3 +115,19 @@ Caso não tenha atingido aceitavelmente o que estamos propondo acima, não iremo
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+# TodoFodase
+
+## Auth
+[x] Autenticação com Passport
+
+[x] Coverage 90% em autenticação (Controller/Repository)
+
+## Transaction
+
+[x] Lojistas não podem fazer uma transferencia
+
+[x] Criar transferencia de uma conta para outra
+
+[] Coverage 90% 

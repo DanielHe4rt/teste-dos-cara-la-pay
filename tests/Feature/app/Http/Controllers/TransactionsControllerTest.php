@@ -4,6 +4,7 @@
 namespace Feature\app\Http\Controllers;
 
 
+use App\Events\SendNotification;
 use App\Models\Retailer;
 use App\Models\User;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -44,7 +45,7 @@ class TransactionsControllerTest extends TestCase
         $this->artisan('passport:install');
         $user = User::factory()->create();
         $payload = [
-            'provider' => 'user',
+            'provider' => 'users',
             'payee_id' => 'fodasenexiste',
             'amount' => 123
         ];
@@ -60,7 +61,7 @@ class TransactionsControllerTest extends TestCase
         $this->artisan('passport:install');
         $user = User::factory()->create();
         $payload = [
-            'provider' => 'user',
+            'provider' => 'users',
             'payee_id' => 'fodasenexiste',
             'amount' => 123
         ];
@@ -76,11 +77,11 @@ class TransactionsControllerTest extends TestCase
         $this->artisan('passport:install');
         $user = Retailer::factory()->create();
         $payload = [
-            'provider' => 'user',
+            'provider' => 'users',
             'payee_id' => 'fodasenexiste',
             'amount' => 123
         ];
-        $request = $this->actingAs($user, 'retailer')
+        $request = $this->actingAs($user, 'retailers')
             ->post(route('postTransaction'), $payload);
 
         $request->assertResponseStatus(401);
@@ -93,7 +94,7 @@ class TransactionsControllerTest extends TestCase
         $userPayed = User::factory()->create();
 
         $payload = [
-            'provider' => 'user',
+            'provider' => 'users',
             'payee_id' => $userPayed->id,
             'amount' => 123
         ];
@@ -101,5 +102,37 @@ class TransactionsControllerTest extends TestCase
             ->post(route('postTransaction'), $payload);
 
         $request->assertResponseStatus(422);
+    }
+
+    public function testUserCanTransferMoney()
+    {
+        $this->expectsEvents(SendNotification::class);
+        $this->artisan('passport:install');
+        $userPayer = User::factory()->create();
+        $userPayer->wallet->deposit(1000);
+        $userPayed = User::factory()->create();
+
+        $payload = [
+            'provider' => 'users',
+            'payee_id' => $userPayed->id,
+            'amount' => 100
+        ];
+        $request = $this->actingAs($userPayer, 'users')
+            ->post(route('postTransaction'), $payload);
+
+
+        $request->assertResponseStatus(200);
+
+        $request->seeInDatabase('wallets', [
+            'id' => $userPayer->wallet->id,
+            'balance' => 900
+        ]);
+
+        $request->seeInDatabase('wallets', [
+            'id' => $userPayed->wallet->id,
+            'balance' => 100
+        ]);
+
+
     }
 }
